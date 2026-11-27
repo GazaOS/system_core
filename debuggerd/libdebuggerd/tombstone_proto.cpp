@@ -874,7 +874,11 @@ void engrave_tombstone_proto(Tombstone* tombstone, unwindstack::AndroidUnwinder*
   } else {
     result.set_guest_arch(Architecture::NONE);
   }
-  result.set_lineage_version(android::base::GetProperty("ro.lunaris.build.version", "unknown"));
+  std::string rom_version = android::base::GetProperty("ro.gazaos.build.version", "");
+  if (rom_version.empty()) {
+    rom_version = android::base::GetProperty("ro.lunaris.build.version", "unknown");
+  }
+  result.set_lineage_version(rom_version);
   result.set_build_fingerprint(android::base::GetProperty("ro.build.fingerprint", "unknown"));
   result.set_revision(android::base::GetProperty("ro.revision", "unknown"));
   result.set_timestamp(get_timestamp());
